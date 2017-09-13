@@ -60,6 +60,7 @@ public class TestWSSecurity {
 		assertNotNull (response);
 		
 		System.out.println(response.getStatusCode());
+		assertTrue (response.getStatusCode()==200);
 		System.out.println(response.getStatusLine());
 		System.out.println(response.asString());
 		
