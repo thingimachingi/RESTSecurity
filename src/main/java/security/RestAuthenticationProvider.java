@@ -38,7 +38,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         }
         
         // calculate the hmac of content with secret key
-        String hmac = calculateHMAC(secret, credentials.getRequestData());
+        String hmac = HMACUtil.calculateHMAC(secret, credentials.getRequestData());
         // check if signatures match
         if (!credentials.getSignature().equals(hmac)) {
             throw new BadCredentialsException("Invalid username or password.");
@@ -51,18 +51,6 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         return restToken;	
     }
 	
-	   private String calculateHMAC(String secret, String data) {
-	        try {
-	            SecretKeySpec signingKey = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
-	            Mac mac = Mac.getInstance("HmacSHA256");
-	            mac.init(signingKey);
-	            byte[] rawHmac = mac.doFinal(data.getBytes());
-	            String result = new String(Base64.encodeBase64(rawHmac));
-	            return result;
-	        } catch (GeneralSecurityException e) {
-	            throw new IllegalArgumentException();
-	        }
-	    }	
 
 	@Override
 	public boolean supports(Class<?> authentication) {
